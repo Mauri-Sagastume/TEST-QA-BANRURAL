@@ -41,12 +41,12 @@
 </body>
 
 <script>
-  let randomNumber = Math.random() * 10;
+  let randomNumber = Math.floor(Math.random()*100)+1;
 
-  const ATTEMPS = 5;
+  const ATTEMPTS = 5;
   const guesses = document.querySelector('.guesses');
   const lastResult = document.querySelector('.lastResult');
-  const lowOrHi = document.querySelector('lowOrHi');
+  const lowOrHi = document.querySelector('.lowOrHi');
   const guessSubmit = document.querySelector('.guessSubmit');
   const guessField = document.querySelector('.guessField');
 
@@ -61,22 +61,28 @@
     }
     guesses.textContent += userGuess + ' ';
 
+    if (!Number.isInteger(Number(userGuess))) {
+    alert('Ingresa un número entero válido!');
+    guessField.value = '';
+    return;
+  }
+
     if(userGuess === randomNumber) {
-      lastResult.textContent = '!!!Pérdistes!!!';
-      lastResult.style.backgroundColor = 'black';
+      lastResult.textContent = '!!!Perdiste!!!';
+      lastResult.style.backgroundColor = 'red';
       lowOrHi.textContent = '';
       setGameOver();
-    } else if(guessCount === ATTEMPS) {
+    } else if(guessCount === ATTEMPTS) {
       lastResult.textContent = 'Felicitaciones! adivinaste el número!';
-      lastResult.style.backgroundColor = 'red';
+      lastResult.style.backgroundColor = 'green';
       setGameOver();
     } else {
       lastResult.textContent = 'Incorrecto! ';
-      lastResult.style.backgroundColor = 'green';
+      lastResult.style.backgroundColor = 'black';
       if(userGuess < randomNumber) {
-        lowOrHi.textContent = 'El número es mayor!';
+        lowOrHi.textContent = 'Incorrecto! El número es mayor!';
       } else if(userGuess > randomNumber) {
-        lowOrHi.textContent = 'El número es menor!';
+        lowOrHi.textContent = 'Inconrrecto! El número es menor!';
       }
     }
 
@@ -84,7 +90,7 @@
     guessField.value = '';
     guessField.focus();
   }
-  guessSubmit.addeventListener('click', checkGuess);
+  guessSubmit.addEventListener('click', checkGuess);
 
   function setGameOver() {
 	  guessField.disabled = true;
@@ -92,7 +98,7 @@
 	  resetButton = document.createElement('button');
 	  resetButton.textContent = 'Comienza un nuevo juego';
 	  document.body.appendChild(resetButton);
-	  resetButton.addeventListener('click', resetGame);
+	  resetButton.addEventListener('click', resetGame);
   }
 
   function resetGame() {
@@ -111,7 +117,7 @@
 
 	  lastResult.style.backgroundColor = 'white';
 
-	  randomNumber = Math.floor(Math.random()) + 1;
+	  randomNumber = Math.floor(Math.random()*100) + 1;
   }
 </script>
 </html>
